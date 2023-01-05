@@ -1,31 +1,47 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
+app.use(express.json());
 
-// MIDDLEWARE  
-app.use(express.json())
 
 const turtles = [
-    {name: "Leonardo", role: "Ninja", weapon: 'Katana'},
-    {name: "Michaelangelo", role: "Ninja", weapon: 'Nunchaku'},
-    {name: "Donatello", role: "Ninja", weapon: 'Bo'},
-    {name: "Raphael", role: "Ninja", weapon: 'Sai'},
-]
+    { name: "Leonardo", role: "ninja" },
+    { name: "Michaelangelo", role: "ninja" },
+    { name: "Donatello", role: "ninja" },
+    { name: "Raphael", role: "ninja" },
+];
 
 
 
 
-app.get('/', (req, res) => {
-    res.json({response: 'Gello World'})
-})
 
-app.get('/turtles', (req, res) => {
+app.get("/", (req, res) => {
+    res.json({ response: "Hello world" });
+});
+
+app.get("/turtles", (req, res) => {
+    res.json(turtles);
+});
+
+app.get("/turtles/:index", (req, res) => {
+    res.json(turtles[req.params.index]);
+});
+
+app.post("/turtles", (req, res) => {
+    turtles.push(req.body);
+    res.json(turtles);
+});
+
+app.put("/turtles/:index", (req, res) => {
+
+    turtles[req.params.index] = req.body;
     res.json(turtles)
+
 })
 
-app.get('/turtles/:index', (req, res) => {
-    //in order to grab the index from the "/turtles/:index" we do req.params.index
-    res.json(turtles[req.params.index])
+app.delete('/turtles/:index', (req, res) => {
+    turtles.splice(req.params.index, 1);
+    res.json(turtles);
 })
 
 
@@ -33,6 +49,6 @@ app.get('/turtles/:index', (req, res) => {
 
 
 
-app.listen(4000, () => {
-    console.log('Listening on port 4000')
-})
+
+
+app.listen(4000, () => console.log("listening on port 4000"));
